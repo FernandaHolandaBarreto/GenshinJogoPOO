@@ -1,0 +1,138 @@
+@startuml
+title Aventura da Viajante - Diagrama de Classes Completo
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+package principal {
+    class Main
+}
+
+package jogador {
+    class Jogador {
+        - nome: String
+        - viajante: String
+        - gemas: int
+        - desejos: int
+        - mora: int
+        - vida: int
+        + adicionarGemas()
+        + adicionarDesejos()
+        + adicionarMora()
+        + gastarMora()
+        + perderVida()
+        + recuperarVida()
+        + consumirDesejo()
+    }
+
+    class Inventario {
+        - itens: Map
+        + adicionar()
+        + quantidade()
+        + tem()
+        + consumir()
+        + mostrar()
+    }
+}
+
+package personagem {
+    class Personagem {
+        - nomeDoPersonagem: String
+        - raridade: String
+        - nivel: int
+        - constelacoes: int
+        - talento: int
+        + usarHabilidade()
+        + equiparArma()
+        + equiparArtefato()
+    }
+
+    class Equipe
+    class ColecaoPersonagens
+    class Arma
+    class Artefatos
+    class Elemento
+    class Reacao
+
+    interface Habilidades {
+        + executar()
+    }
+
+    class Ultimate
+    class AprimoramentoElemental
+}
+
+package jogabilidade {
+    abstract class Eventos {
+        - nomeDoEvento: String
+        - recompensaEmGemas: int
+        + executar()
+    }
+
+    class EventoPrincipal
+    class EventoExploracao
+    class EventoSecundario
+    class EventoTestePersonagem
+    class Mapa
+    class Missoes
+    class GuiaDeAventureiro
+}
+
+package desejo {
+    class Desejo
+    class SistemaDePity
+}
+
+package sistemas {
+    class ConteudoExtra
+}
+
+package util {
+    class ConsoleIO
+}
+
+' Composição
+Jogador *-- Inventario
+
+' Agregação
+Equipe o-- Personagem
+ColecaoPersonagens o-- Personagem
+
+' Relacionamentos
+Personagem --> Arma
+Personagem --> Artefatos
+Personagem --> Elemento
+Personagem --> Reacao
+Personagem --> Habilidades
+
+' Implementação de interface
+Ultimate ..|> Habilidades
+AprimoramentoElemental ..|> Habilidades
+
+' Herança
+EventoPrincipal --|> Eventos
+EventoExploracao --|> Eventos
+EventoSecundario --|> Eventos
+EventoTestePersonagem --|> Eventos
+
+' Dependências
+Main ..> Jogador
+Main ..> Mapa
+Main ..> ConteudoExtra
+Main ..> SistemaDePity
+Main ..> GuiaDeAventureiro
+Main ..> ConsoleIO
+
+Mapa ..> Jogador
+ConteudoExtra ..> Jogador
+ConteudoExtra ..> Personagem
+ConteudoExtra ..> ColecaoPersonagens
+ConteudoExtra ..> Eventos
+SistemaDePity ..> Jogador
+SistemaDePity ..> ColecaoPersonagens
+Desejo ..> SistemaDePity
+Missoes ..> Jogador
+GuiaDeAventureiro ..> ConteudoExtra
+
+@enduml

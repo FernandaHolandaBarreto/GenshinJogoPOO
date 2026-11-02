@@ -1,0 +1,9 @@
+package jogabilidade;
+import util.ConsoleIO; import jogador.Jogador;
+public class Mapa {
+ private final String[] regioes={"Mondstadt","Liyue","Inazuma","Sumeru","Fontaine","Natlan","Nod-Krai","Snezhnaya","Minas Subterrâneas","Mar Antigo","Pirâmides","Templo do Espaço","Vulcão"}; private final boolean[] exploradas=new boolean[regioes.length];
+ public int getQuantidadeDeRegioes(){return regioes.length;}
+ public int getRegioesExploradas(){int total=0;for(boolean explorada:exploradas)if(explorada)total++;return total;}
+ public boolean jornadaConcluida(){return getRegioesExploradas()==regioes.length;}
+ public void abrir(Jogador j){String op;do{ConsoleIO.println("\n===== MAPA DE TEYVAT =====\nVida: "+j.getVida()+"/12.000\nRegiões exploradas: "+getRegioesExploradas()+"/"+regioes.length);for(int i=0;i<regioes.length;i++)ConsoleIO.println((i+1)+" - "+regioes[i]+(exploradas[i]?" (explorada)":""));ConsoleIO.println("14 - Estátua dos Sete\n0 - Voltar");op=ConsoleIO.readln("Escolha: ");if(op.equals("14")){ConsoleIO.println("1 - Recuperar vida\n0 - Sair");if(ConsoleIO.readln("Escolha: ").equals("1")){j.recuperarVida();ConsoleIO.println("Vida recuperada: 12.000/12.000!");}continue;}try{int i=Integer.parseInt(op)-1;if(i<0||i>=regioes.length)continue;ConsoleIO.println("Você chegou a "+regioes[i]+"!\n1 - Explorar região\n2 - Ver 12 pontos de teleporte\n0 - Voltar");String a=ConsoleIO.readln("Escolha: ");if(a.equals("1")){if(exploradas[i])ConsoleIO.println("Região já explorada.");else{exploradas[i]=true;j.adicionarGemas(4000);j.adicionarDesejos(10);ConsoleIO.println("Você recebeu 4.000 gemas e 10 desejos.");if(jornadaConcluida())ConsoleIO.println("Todas as regiões foram exploradas! Você concluiu a jornada de Teyvat!");}}else if(a.equals("2")){for(int n=1;n<=12;n++)ConsoleIO.println("Teleporte "+n+" - "+regioes[i]);}}catch(NumberFormatException e){if(!op.equals("0"))ConsoleIO.println("Opção inválida.");}}while(!op.equals("0"));}
+}
